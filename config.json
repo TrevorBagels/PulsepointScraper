@@ -1,0 +1,34 @@
+{
+	"apiKey" : "GoOgLeKeYhErE",
+	"pushoverToken": "your application token goes here",
+	"pushoverUser": "your user token goes here.",
+	"headless" : true,
+	"speed": 1,
+	"scanInterval" : "1m",
+	"timeout": 10,
+	"radiusDefault": "100m",
+	"ignoreRecent": false,
+	"skipAnalysis": false,
+	"agencies" : [
+		{
+			"name" : "Tualatin Valley Fire & Rescue (OR)"
+		},
+		{
+			"name" : "Portland Fire & Rescue (OR)",
+			"scanInterval" : "5m"
+		}
+	],
+	"locations" : [
+		{
+			"name" : "test",
+			"coords" : [45.50812524740005, -122.77920997189283],
+			"_note" : "latitude comes before longitude.",
+			"radius": "2km"
+		},
+		{
+			"name" : "test 2",
+			"match": "VANCOUVER AVE",
+			"importance": 3
+		}
+	]
+}
