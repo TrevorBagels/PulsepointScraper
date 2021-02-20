@@ -1,13 +1,13 @@
 {
-	"apiKey" : "GoOgLeKeYhErE",
-	"pushoverToken": "your application token goes here",
-	"pushoverUser": "your user token goes here.",
+	"apiKey" : "",
+	"pushoverToken": "",
+	"pushoverUser": "",
 	"headless" : true,
 	"speed": 1,
 	"scanInterval" : "1m",
 	"timeout": 10,
 	"radiusDefault": "100m",
-	"ignoreRecent": false,
+	"ignoreRecent": true,
 	"skipAnalysis": false,
 	"agencies" : [
 		{

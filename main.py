@@ -1,5 +1,4 @@
 import os, time, json, googlemaps, math, sys
-from geopy.distance import geodesic
 from selenium import webdriver
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.support import expected_conditions as EC
@@ -9,6 +8,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from PPSUtils import Utils, Config
 import Events
+from ConditionalImportance import ImportanceChecker
 
 class Main:
 	def __init__(self):
@@ -17,13 +17,15 @@ class Main:
 		self.gmaps = None
 		self.driver = None
 		self.options = webdriver.ChromeOptions()
+		self.importanceChecker = ImportanceChecker(self)
+		self.isIncidentImportant = self.importanceChecker.IsIncidentImportant
 		self.LoadConfig()
 		self.SetupChromedriver()
 		self.os = "mac"
 		self.Events = Events.Events(self)
 		#load the webpage
 		self.driver.get("https://web.pulsepoint.org")
-		while True:			
+		while True:
 			try:
 				self.MainLoop()
 			except Exception as e:
@@ -77,42 +79,7 @@ class Main:
 
 	def incidentID(self, incident):
 		return f"{incident['time']}_{incident['address']}_{incident['type']}"
-	def isIncidentImportant(self, incident): #todo: move to a seperate module.
-		iid = self.incidentID(incident)
-		if iid not in self.data['analyzed']:
-			self.data['analyzed'].append(iid)
-		else:
-			return False
-		#analyze it and determine if it seems important and worthy of notifying the user about.
-		#coords and stuff
-		incident["dists"] = {}
-		incident['significantLocation'] = None #this will be the name of a location in config.locations if we need to notify the user about it.
-		if self.gmaps != None:
-			incident['coords'] = Utils.getCoords(incident['address'], self.gmaps)
-			#now measure distance
-			for l in self.config['locations']:
-				if 'coords' in l:
-					incident['dists'][l['name']] = geodesic(incident['coords'], l['coords'])
-					if Config.parse_measurement(str(incident["dists"][l['name']])) <= l['radius']:#this incident has been declared important. Call the analysis finished event then return true.
-						incident["significantLocation"] = l['name']
-						self.Events.OnIncidentAnalyzed(incident)
-						return True
-		#now try doing match/regex options
-		def removeChars(txt, chars=",./?><()+=-_~!#"):#makes it easier to match the strings by getting rid of unnecessary junk.
-			newTxt = txt
-			for x in chars:
-				newTxt = newTxt.replace(x, "")
-			return newTxt
-		for l in self.config['locations']:
-			if 'match' in l:
-				matchString = removeChars(l['match'].lower()) #the monitored location matching string (if this is in the incident, then it's important)
-				if matchString in removeChars(incident['address'].lower()):
-					#deem it important
-					incident["significantLocation"] = l['name']
-					self.Events.OnIncidentAnalyzed(incident)
-					return True
-		
-		self.Events.OnIncidentAnalyzed(incident)
+	
 		
 
 
