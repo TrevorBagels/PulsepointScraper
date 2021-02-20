@@ -23,9 +23,7 @@ class Main:
 		self.Events = Events.Events(self)
 		#load the webpage
 		self.driver.get("https://web.pulsepoint.org")
-		while True:
-			self.MainLoop()
-			'''
+		while True:			
 			try:
 				self.MainLoop()
 			except Exception as e:
@@ -39,7 +37,7 @@ class Main:
 				self.SetupChromedriver()
 				self.driver.get("https://web.pulsepoint.org")
 				self.sleep(3)
-			'''
+			
 			self.sleep(3)
 	
 	def sleep(self, sTime):
