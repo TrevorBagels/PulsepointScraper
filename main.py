@@ -76,13 +76,8 @@ class Main:
 					incidentList.append(incidentReport)
 					self.Events.OnAnyIncidentFound(incidentReport)
 		return incidentList
-
 	def incidentID(self, incident):
 		return f"{incident['time']}_{incident['address']}_{incident['type']}"
-	
-		
-
-
 	def MainLoop(self):
 		#region queue setup
 		self.data['queue'] = [] #reset the queue, then re-determine it.
@@ -166,8 +161,6 @@ class Main:
 				freq = Config.parse_time(agency["scanInterval"])
 			a = {"lastScanned": 0, "frequency": freq, "name": agency["name"]}
 			self.data['agencies'].append(a)
-				
-
 	def LoadConfig(self): #eventually will be replaced with a very advanced configuration loader that I have yet to program.
 		def validateLocations(locations):
 			failed = 0
@@ -194,6 +187,12 @@ class Main:
 		try:
 			with open("config.json", "r") as f:
 				self.config = json.loads(f.read())
+			if os.path.exists("configOverrides.json"):
+				with open("configOverrides.json", "r") as f:
+					overrides = json.loads(f.read())
+					for key in overrides:
+						self.config[key] = overrides[key]
+			
 		except:
 			print("Error loading JSON! This is YOUR fault! (use a json validator and figure out what's wrong)")
 			exit()

@@ -1,13 +1,13 @@
 {
-	"apiKey" : "",
-	"pushoverToken": "",
-	"pushoverUser": "",
+	"apiKey" : "google maps api key",
+	"pushoverToken": "pushover application token",
+	"pushoverUser": "pushover user token",
 	"headless" : true,
 	"speed": 1,
 	"scanInterval" : "1m",
 	"timeout": 10,
 	"radiusDefault": "100m",
-	"ignoreRecent": true,
+	"ignoreRecent": false,
 	"skipAnalysis": false,
 	"agencies" : [
 		{
