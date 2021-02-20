@@ -1,0 +1,5 @@
+selenium
+geopy
+googlemaps
+regex
+notifiers
