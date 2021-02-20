@@ -8,7 +8,7 @@ Get notifications about certain medical emergencies at custom locations (highly 
 4. Make sure to configure before using!
 
 ## Configuration
-Open config.json to start doing some configuration. You'll need to fill out the API keys for google maps and pushover, or things might not work properly. Everything else should work, but configuring the program is highly recommended if you intend to actually use it.
+Open config.json to start doing some configuration. You'll need to fill out the API keys for google maps and pushover, or things might not work properly. Everything else should work, but configuring the program is highly recommended if you intend to actually use it. Click [here](https://github.com/TrevorBagels/PulsepointScraper/wiki/Configuration) for more info on configuration. 
 
 ## Usage
 Simply run `python3 main.py` and everything should work. Note: **this has only been tested on mac, linux/windows versions will be available soon.**
