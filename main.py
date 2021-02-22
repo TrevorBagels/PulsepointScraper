@@ -26,7 +26,6 @@ class Main:
 		self.importanceChecker = ImportanceChecker(self)
 		self.isIncidentImportant = self.importanceChecker.IsIncidentImportant
 		self.LoadConfig()
-		json.dump(self.config, open("output.json", "w+"), indent=4)
 		self.SetupChromedriver()
 		self.os = "mac"
 		self.Events = Events.Events(self)
