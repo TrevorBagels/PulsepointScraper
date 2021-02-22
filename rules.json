@@ -1,0 +1,36 @@
+{
+	"radiusDefault": {"t": "distance", "d": "50m", "varSet": "radiusDefault", "desc": "The default radius to use."},
+	"speed": {"t": "number", "min": 0, "d": 1, "desc": "Set this to a lower value if you're having trouble with the browser not keeping up with the program."},
+	"apiKey" : {"t": "string", "d": "YOUR_KEY_HERE", "r": true, "desc": "Your google maps API key."},
+	"pushoverToken": {"t": "string", "autoAdd": false, "desc": "Your pushover application token"},
+	"pushoverUser": {"t": "string", "autoAdd": false, "desc": "Your pushover user token"},
+	"headless" : {"t": "bool", "d": true, "desc": "Run without a window"},
+	"scanInterval" : {"t": "time", "d": "60s", "varSet": "scanIntervalDefault", "desc": "How often to perform scans."},
+	"agencies" : {"t": "array", "r": true, "minLength": 1, "desc": "Which agencies to scan", "d": [{"name" : "Portland Fire & Rescue (OR)"}],
+		"rule": {
+			"t": "object",
+			"rules":
+			{
+				"name" : {"t": "string", "r": true, "desc": "The name of the agency"},
+				"scanInterval": {"t": "time", "d": "$$scanIntervalDefault", "desc": "Overrides the default scan interval"}
+			}
+		} 
+	},
+	"//typeFilters" : {"t": "blacklist", "d": ["*"], "options": [], "allowAny": true},
+	"locations" : {"t": "array", "r": true, "desc": "The locations to scan", "d": [],
+		"rule":{
+			"t": "object",
+			"rules":{
+				"name": {"t": "string", "r": true},
+				"address": {"t": "string", "autoAdd": false},
+				"coords": {"t": "array", "minLength": 2, "maxLength": 2, "autoAdd": false, "rule": {"t": "number"},
+					"rule#0": {"t": "number", "min": -90, "max": 90},
+					"rule#1": {"t": "number", "min": -180, "max": 180}
+				},
+				"radius": {"t": "distance", "d": "$$radiusDefault"},
+				"importance": {"t": "number", "int": true, "d":1},
+				"match": {"t": "string", "autoAdd": false}
+			}			
+		}
+	}
+}

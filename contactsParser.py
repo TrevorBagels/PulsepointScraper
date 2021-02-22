@@ -1,0 +1,23 @@
+#for parsing contacts from a csv file (macos) (remove the first line of the csv file if you get an error)
+#done by selecting all contacts and dropping them into a Numbers spreadsheet, and then exporting to csv.
+
+
+import csv
+from os import stat
+with open('../contacts.csv', newline='') as f:
+	reader = csv.DictReader(f)
+	locations = []
+	for row in reader:
+		if row["Address : home : Street"] == "":
+			continue
+		name = row["First name"].strip() + " " + row["Last name"].strip()
+		street = row["Address : home : Street"].strip() 
+		city = row["Address : home : City"].strip()
+		state = row["Address : home : State"].strip()
+		if city == "":
+			city = "Portland"
+		if state == "":
+			state = "OR"
+		address = street + ", " + city +", " + state
+		locations.append({"name": name, "address": address, "importance": 2, "radius": "150m"})
+	print(locations)
