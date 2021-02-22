@@ -6,13 +6,19 @@ from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
-from PPSUtils import Utils, Config
+from PPSUtils import Utils
 import Events
 from ConditionalImportance import ImportanceChecker
+from JSON4JSON import JSON4JSON
+
+
+
+
 
 class Main:
 	def __init__(self):
 		self.data = {"agencies" : [], "queue" : [], "lastIncidents" : [], "analyzed" : [], "locations" : [] }
+		self.configLoader = JSON4JSON()
 		self.config = None
 		self.gmaps = None
 		self.driver = None
@@ -20,26 +26,30 @@ class Main:
 		self.importanceChecker = ImportanceChecker(self)
 		self.isIncidentImportant = self.importanceChecker.IsIncidentImportant
 		self.LoadConfig()
+		json.dump(self.config, open("output.json", "w+"), indent=4)
 		self.SetupChromedriver()
 		self.os = "mac"
 		self.Events = Events.Events(self)
 		#load the webpage
 		self.driver.get("https://web.pulsepoint.org")
+		devmode = True
 		while True:
-			try:
+			if devmode:
 				self.MainLoop()
-			except Exception as e:
-				print(e)
-				print("error occured. restarting browser...")
-				self.sleep(5)
-				self.driver.quit()
-				print("quit browser!")
-				self.sleep(1)
-				self.driver = None
-				self.SetupChromedriver()
-				self.driver.get("https://web.pulsepoint.org")
-				self.sleep(3)
-			
+			else:
+				try:
+					self.MainLoop()
+				except Exception as e:
+					print(e)
+					print("error occured. restarting browser...")
+					self.sleep(5)
+					self.driver.quit()
+					print("quit browser!")
+					self.sleep(1)
+					self.driver = None
+					self.SetupChromedriver()
+					self.driver.get("https://web.pulsepoint.org")
+					self.sleep(3)
 			self.sleep(3)
 	
 	def sleep(self, sTime):
@@ -156,12 +166,12 @@ class Main:
 	def LoadAgencies(self):
 		#setup data.agencies
 		for agency in self.config['agencies']:
-			freq = Config.parse_time(self.config["scanInterval"])
+			freq = self.config["scanInterval"]
 			if "scanInterval" in agency:
-				freq = Config.parse_time(agency["scanInterval"])
+				freq = agency["scanInterval"]
 			a = {"lastScanned": 0, "frequency": freq, "name": agency["name"]}
 			self.data['agencies'].append(a)
-	def LoadConfig(self): #eventually will be replaced with a very advanced configuration loader that I have yet to program.
+	def LoadConfig(self):
 		def validateLocations(locations):
 			failed = 0
 			for l in locations:
@@ -173,29 +183,18 @@ class Main:
 						except Exception as e:
 							print(e)
 							failed += 1
-							print(f"Could not geocode address {l['address']}.")
-				if "radius" not in l:
-					l['radius'] = Config.parse_measurement(self.config['radiusDefault'])
-				else:
-					l['radius'] = Config.parse_measurement(l['radius'])
-				if "importance" not in l:
-					l['importance'] = 1
-				
+							print(f"Could not geocode address for location {l['name']}.")
 			print(f"Location validation complete. {failed} failed address(es)")
 			#print(locations)
-
-		try:
-			with open("config.json", "r") as f:
-				self.config = json.loads(f.read())
-			if os.path.exists("configOverrides.json"):
-				with open("configOverrides.json", "r") as f:
-					overrides = json.loads(f.read())
-					for key in overrides:
-						self.config[key] = overrides[key]
-			
-		except:
-			print("Error loading JSON! This is YOUR fault! (use a json validator and figure out what's wrong)")
-			exit()
+		self.configLoader.load("config.json", "rules.json")
+		self.config = self.configLoader.data
+		#this is for adding other locations without adding them to the main config file. 
+		# Because I use this too, and I don't need y'all knowing what I'm monitoring.
+		if os.path.exists("configOverrides.json"):
+			with open("configOverrides.json", "r") as f:
+				overrides = json.loads(f.read())
+				for key in overrides:
+					self.config[key] = overrides[key]
 		self.InitGMaps()
 		validateLocations(self.config['locations'])
 		self.LoadAgencies()

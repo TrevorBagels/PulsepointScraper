@@ -27,8 +27,9 @@ class Events:
         p = get_notifier("pushover")
         coords = "no coords found"
         locationAddress = "no address found"
-        if "address" in GetLocationByName(self.main, location):
-            locationAddress = self.main.config['locations']['address']
+        locationref = GetLocationByName(self.main, location)
+        if "address" in locationref:
+            locationAddress = locationref['address']
         if "coords" in incident:
             coords = str(incident['coords'])
         #MESAGE GOES HERE

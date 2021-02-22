@@ -11,11 +11,12 @@
 	"skipAnalysis": false,
 	"agencies" : [
 		{
-			"name" : "Tualatin Valley Fire & Rescue (OR)"
+			"name" : "Tualatin Valley Fire & Rescue (OR)",
+			"scanInterval": "90s"
 		},
 		{
 			"name" : "Portland Fire & Rescue (OR)",
-			"scanInterval" : "5m"
+			"scanInterval" : "90s"
 		}
 	],
 	"locations" : [

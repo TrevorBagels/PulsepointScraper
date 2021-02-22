@@ -1,4 +1,4 @@
-from PPSUtils import Utils, Config
+from PPSUtils import Utils
 from geopy.distance import geodesic
 
 class ImportanceChecker:
@@ -37,8 +37,6 @@ class TextBasedImportance:
 			if matchString in self.removeChars(self.incident['address'].lower()): #there was a text match, this is important
 				return True
 		return False
-			
-
 	#makes it easier to match the strings by getting rid of unnecessary junk.
 	def removeChars(self, txt, chars=",./?><()+=-_~!#"):
 			newTxt = txt
@@ -54,13 +52,12 @@ class LocationbasedImportance:
 		incident["dists"] = {}
 		if self.main.gmaps != None:
 			incident['coords'] = Utils.getCoords(incident['address'], main.gmaps)
-	
 	def check(self, l):#l = the location being checked. this should return true/false
 		if self.main.gmaps == None: #no google maps, doing a location check is useless
 			return False
 		if 'coords' in l:
-			self.incident['dists'][l['name']] = geodesic(self.incident['coords'], l['coords'])
-			if Config.parse_measurement(str(self.incident["dists"][l['name']])) <= l['radius']:#this incident has been declared important. Call the analysis finished event then return true.
+			self.incident['dists'][l['name']] = geodesic(self.incident['coords'], l['coords']).meters
+			if self.incident["dists"][l['name']] <= l['radius']:#this incident has been declared important. Call the analysis finished event then return true.
 				self.incident["significantLocation"] = l['name']
 				return True
 		return False

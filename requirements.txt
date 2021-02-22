@@ -3,3 +3,4 @@ geopy
 googlemaps
 regex
 notifiers
+JSON4JSON
