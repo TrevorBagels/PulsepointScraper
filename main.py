@@ -10,28 +10,31 @@ from PPSUtils import Utils
 import Events
 from ConditionalImportance import ImportanceChecker
 from JSON4JSON import JSON4JSON
+import argparse
 
 
 
 
 
 class Main:
-	def __init__(self):
+	def __init__(self, configFile="config.json"):
 		self.data = {"agencies" : [], "queue" : [], "lastIncidents" : [], "analyzed" : [], "locations" : [] }
 		self.configLoader = JSON4JSON()
 		self.config = None
 		self.gmaps = None
+		self.cfgFile = configFile
 		self.driver = None
 		self.options = webdriver.ChromeOptions()
 		self.importanceChecker = ImportanceChecker(self)
 		self.isIncidentImportant = self.importanceChecker.IsIncidentImportant
 		self.LoadConfig()
+		json.dump(self.config, open("output.json", "w+"), indent=4)
 		self.SetupChromedriver()
 		self.os = "mac"
 		self.Events = Events.Events(self)
 		#load the webpage
 		self.driver.get("https://web.pulsepoint.org")
-		devmode = True
+		devmode = False
 		while True:
 			if devmode:
 				self.MainLoop()
@@ -185,15 +188,9 @@ class Main:
 							print(f"Could not geocode address for location {l['name']}.")
 			print(f"Location validation complete. {failed} failed address(es)")
 			#print(locations)
-		self.configLoader.load("config.json", "rules.json")
+		print("Loading config file", self.cfgFile)
+		self.configLoader.load(self.cfgFile, "rules.json")
 		self.config = self.configLoader.data
-		#this is for adding other locations without adding them to the main config file. 
-		# Because I use this too, and I don't need y'all knowing what I'm monitoring.
-		if os.path.exists("configOverrides.json"):
-			with open("configOverrides.json", "r") as f:
-				overrides = json.loads(f.read())
-				for key in overrides:
-					self.config[key] = overrides[key]
 		self.InitGMaps()
 		validateLocations(self.config['locations'])
 		self.LoadAgencies()
@@ -215,7 +212,14 @@ class Main:
 	#endregion
 
 if __name__ == "__main__":
-	Main()
+	parser = argparse.ArgumentParser(description='Enter the name of a custom config file')
+	parser.add_argument('--config', type=str, nargs='+', help="custom config file location")
+	cfg = "config.json"
+	parsed = parser.parse_args()
+	if parsed.config != None:
+		cfg = parsed.config[0]
+	
+	Main(configFile=cfg)
 
 
 
