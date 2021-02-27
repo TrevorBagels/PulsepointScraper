@@ -14,5 +14,7 @@ Open config.json to start doing some configuration. You'll need to fill out the 
 
 ## Usage
 Simply run `python3 main.py` and everything should work.
+
 **This has not yet been tested for windows.**
-**Linux seems to have issues locating elements, I'm currently working on fixing this.**
+
+**Linux might have some problems, but in theory, it should work.**
