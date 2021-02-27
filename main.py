@@ -203,13 +203,13 @@ class Main:
 		if self.config['headless']:
 			self.options.add_argument('headless')
 		if self.config['os'] == 'macos':
-			self.driver = webdriver.Chrome(executable_path=os.getcwd()+"/Chrome/chromedriver", options=self.options) #macos
+			self.driver = webdriver.Chrome(executable_path=os.getcwd()+"/Drivers/chromedriver", options=self.options) #macos
 			return "Setup chromedriver for macos"
 		if self.config['os'] == "linux":
-			self.driver = webdriver.Chrome(options=self.options)
+			self.driver = webdriver.Firefox(executable_path=os.getcwd()+"/Drivers/geckodriver", options=self.options)
 			return "Setup chromedriver for linux"
 		if self.config['os'] == "windows":
-			self.driver = webdriver.Chrome(executable_path=os.getcwd()+"/Chrome/chromedriver", options=self.options) #will this work for windows? idk
+			self.driver = webdriver.Chrome(executable_path=os.getcwd()+"/Drivers/chromedriver", options=self.options) #will this work for windows? idk
 			return "Attempted to setup chromedriver for windows."
 	#endregion
 
