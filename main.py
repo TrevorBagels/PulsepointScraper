@@ -22,7 +22,6 @@ class Main:
 		self.gmaps = None
 		self.cfgFile = configFile
 		self.driver = None
-		self.options = webdriver.ChromeOptions()
 		self.importanceChecker = ImportanceChecker(self)
 		self.isIncidentImportant = self.importanceChecker.IsIncidentImportant
 		self.LoadConfig()
@@ -200,8 +199,16 @@ class Main:
 			print("Google maps API key is invallid.")
 
 	def SetupChromedriver(self):
+		#set up options
+		driverOptions = {
+			"macos": webdriver.ChromeOptions,
+			"linux": webdriver.FirefoxOptions,
+			"windows": webdriver.ChromeOptions
+		}
+		self.options = webdriver.driverOptions[self.config['os']]()
 		if self.config['headless']:
 			self.options.add_argument('headless')
+		
 		if self.config['os'] == 'macos':
 			self.driver = webdriver.Chrome(executable_path=os.getcwd()+"/Drivers/chromedriver", options=self.options) #macos
 			return "Setup chromedriver for macos"
