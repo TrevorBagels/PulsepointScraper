@@ -28,7 +28,6 @@ class Main:
 		self.LoadConfig()
 		json.dump(self.config, open("output.json", "w+"), indent=4)
 		self.SetupChromedriver()
-		self.os = "mac"
 		self.Events = Events.Events(self)
 		#load the webpage
 		self.driver.get("https://web.pulsepoint.org")
@@ -122,14 +121,18 @@ class Main:
 		for agency in self.data['queue']:
 			self.sleep(.2)
 			#clear the field because this website doesn't do that automatically
-			if self.os == "mac":
+			if self.config['os'] == "mac":
 				dropdownInput.send_keys(Keys.COMMAND + "a")
 			else:
 				dropdownInput.send_keys(Keys.LEFT_CONTROL + "a")
+			#delete field
 			dropdownInput.send_keys(Keys.DELETE)
 			self.sleep(.15)
 			dropdownInput.send_keys(agency)
-			dropdownInput.send_keys(Keys.RETURN)
+			if self.config['os'] == "mac":
+				dropdownInput.send_keys(Keys.RETURN)
+			else:
+				dropdownInput.send_keys(Keys.ENTER)
 			self.sleep(.05)
 		#endregion
 		self.sleep(.1)
@@ -217,7 +220,7 @@ class Main:
 			self.driver = webdriver.Chrome(options=self.options)
 			return "Setup chromedriver for linux"
 		if self.config['os'] == "windows":
-			self.driver = webdriver.Chrome(executable_path=os.getcwd()+"/Drivers/chromedriver", options=self.options) #will this work for windows? idk
+			self.driver = webdriver.Chrome(executable_path=os.getcwd()+"\\Drivers\\chromedriver.exe", options=self.options) #will this work for windows? idk
 			return "Attempted to setup chromedriver for windows."
 	#endregion
 
