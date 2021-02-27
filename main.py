@@ -205,7 +205,7 @@ class Main:
 			"linux": webdriver.FirefoxOptions,
 			"windows": webdriver.ChromeOptions
 		}
-		self.options = webdriver.driverOptions[self.config['os']]()
+		self.options = driverOptions[self.config['os']]()
 		if self.config['headless']:
 			self.options.add_argument('headless')
 		
