@@ -1,2 +1,5 @@
 /configOverrides.json
 /output.json
+/EventsCustom.py
+/Logs
+*.log

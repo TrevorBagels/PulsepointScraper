@@ -1,6 +1,6 @@
 #for parsing contacts from a csv file (macos) (remove the first line of the csv file if you get an error)
 #done by selecting all contacts and dropping them into a Numbers spreadsheet, and then exporting to csv.
-
+#eventually will be replaced by automatic importing of icloud contacts
 locationDefault = ["Portland", "OR"] #because that's where I'm from
 import csv
 from os import stat

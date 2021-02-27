@@ -14,8 +14,6 @@ import argparse
 
 
 
-
-
 class Main:
 	def __init__(self, configFile="config.json"):
 		self.data = {"agencies" : [], "queue" : [], "lastIncidents" : [], "analyzed" : [], "locations" : [] }
@@ -91,6 +89,7 @@ class Main:
 	def incidentID(self, incident):
 		return f"{incident['time']}_{incident['address']}_{incident['type']}"
 	def MainLoop(self):
+		self.Events.OnMainLoopStart()
 		#region queue setup
 		self.data['queue'] = [] #reset the queue, then re-determine it.
 		for a in self.data["agencies"]:
@@ -147,7 +146,8 @@ class Main:
 			self.driver.find_element_by_xpath("//a[contains(@class, 'pp_wa_tabs_icon icon-recent')]").click()
 			self.sleep(4)
 			self.data["lastIncidents"] += self.GetIncidentsShown(allIncidents)
-		print(len(self.data['lastIncidents']), "incidents found. Performing analysis now...")
+		self.Events.OnAnalysisStart()
+		
 		if self.config['skipAnalysis']: #used for testing selenium without making any api calls to google maps
 			print("Skipping analysis!")
 			return
@@ -156,12 +156,7 @@ class Main:
 			important = self.isIncidentImportant(i)
 			if important:
 				self.Events.Notify(i, i['significantLocation'], Events.GetLocationByName(self, i['significantLocation'])['importance'])
-		print("Analysis complete!")
-			
-			
-			
-			
-		
+		self.Events.OnMainLoopEnd()
 
 	#region setup
 

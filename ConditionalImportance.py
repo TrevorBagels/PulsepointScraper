@@ -1,6 +1,8 @@
 from PPSUtils import Utils
 from geopy.distance import geodesic
-
+'''
+this is where the logic of whether an incident is important happens
+'''
 class ImportanceChecker:
 	def __init__(self, main):
 		self.main = main

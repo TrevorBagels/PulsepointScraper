@@ -32,5 +32,12 @@
 				"match": {"t": "string", "autoAdd": false}
 			}			
 		}
+	},
+	"//icloud auto importing contacts and montoring your phone's location coming soon. this will just be another events.py file.":"",
+	"icloud": {"t": "object", "r": false, "autoAdd": "false", "rules": 
+		{
+			"username": {"t": "string", "r": true, "prompt": true},
+			"password": {"t": "string", "r": true, "prompt": true}
+		}
 	}
 }
