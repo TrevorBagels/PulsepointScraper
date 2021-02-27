@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import os, time, json, googlemaps, math, sys
 from selenium import webdriver
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
@@ -213,7 +214,7 @@ class Main:
 			self.driver = webdriver.Chrome(executable_path=os.getcwd()+"/Drivers/chromedriver", options=self.options) #macos
 			return "Setup chromedriver for macos"
 		if self.config['os'] == "linux":
-			self.driver = webdriver.Firefox(executable_path=os.getcwd()+"/Drivers/geckodriver", options=self.options)
+			self.driver = webdriver.Chrome(options=self.options)
 			return "Setup chromedriver for linux"
 		if self.config['os'] == "windows":
 			self.driver = webdriver.Chrome(executable_path=os.getcwd()+"/Drivers/chromedriver", options=self.options) #will this work for windows? idk
