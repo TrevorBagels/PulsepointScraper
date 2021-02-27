@@ -6,10 +6,13 @@ Get notifications about certain medical emergencies at custom locations (highly 
 2. Navigate to the new directory `cd PulsepointScraper`
 3. Install requirements `pip3 install -r requirements.txt`
 4. Make sure to configure before using!
+#### Additional installation steps (linux)
+You may have to install chromedriver for things to work `sudo apt install chromium-chromedriver`. Sudo may or may not be necessary.
 
 ## Configuration
 Open config.json to start doing some configuration. You'll need to fill out the API keys for google maps and pushover, or things might not work properly. Everything else should work, but configuring the program is highly recommended if you intend to actually use it. Click [here](https://github.com/TrevorBagels/PulsepointScraper/wiki/Configuration) for more info on configuration. 
 
 ## Usage
-Simply run `python3 main.py` and everything should work. Note: **this has only been tested on mac, linux/windows versions will be available soon.**
-
+Simply run `python3 main.py` and everything should work.
+**This has not yet been tested for windows.**
+**Linux seems to have issues locating elements, I'm currently working on fixing this.**
