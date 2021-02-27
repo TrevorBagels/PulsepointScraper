@@ -1,4 +1,5 @@
 {
+	"os": {"t": "string", "d": "macos", "r": true, "autoAdd": true},
 	"radiusDefault": {"t": "distance", "d": "50m", "varSet": "radiusDefault", "desc": "The default radius to use."},
 	"speed": {"t": "number", "min": 0, "d": 1, "desc": "Set this to a lower value if you're having trouble with the browser not keeping up with the program."},
 	"apiKey" : {"t": "string", "d": "YOUR_KEY_HERE", "r": true, "desc": "Your google maps API key."},

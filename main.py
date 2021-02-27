@@ -202,8 +202,15 @@ class Main:
 	def SetupChromedriver(self):
 		if self.config['headless']:
 			self.options.add_argument('headless')
-		self.driver = webdriver.Chrome(executable_path=os.getcwd()+"/Chrome/chromedriver", options=self.options) #macos
-		#self.driver = webdriver.Chrome(options=options) #linux
+		if self.config['os'] == 'macos':
+			self.driver = webdriver.Chrome(executable_path=os.getcwd()+"/Chrome/chromedriver", options=self.options) #macos
+			return "Setup chromedriver for macos"
+		if self.config['os'] == "linux":
+			self.driver = webdriver.Chrome(options=self.options)
+			return "Setup chromedriver for linux"
+		if self.config['os'] == "windows":
+			self.driver = webdriver.Chrome(executable_path=os.getcwd()+"/Chrome/chromedriver", options=self.options) #will this work for windows? idk
+			return "Attempted to setup chromedriver for windows."
 	#endregion
 
 if __name__ == "__main__":
@@ -213,7 +220,6 @@ if __name__ == "__main__":
 	parsed = parser.parse_args()
 	if parsed.config != None:
 		cfg = parsed.config[0]
-	
 	Main(configFile=cfg)
 
 
