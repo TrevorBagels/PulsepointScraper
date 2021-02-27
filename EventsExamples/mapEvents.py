@@ -14,12 +14,12 @@ import json, datetime, random
 
 class Events:
     def __init__(self, main):
+        self.main = main #reference to the main class
         self.savePath = "/Users/bagel/Library/Application Support/Übersicht/widgets/bagel.widget/"
         self.sw = [45.32616808642837, -122.99680708158327]
         self.ne = [45.62569517298938, -122.27091410482807]
         self.location = self.main.config['locations'][0]['coords'] #center point for the location
         self.logFileName = "Logs/" + str(datetime.datetime.now()).split(" ")[0] + "_" + str(random.randrange(1, 9999)) + ".log"
-        self.main = main #reference to the main class
         self.incidents = []
         print(self.location)
         self.map = folium.Map(location=self.location, zoom_start=4, tiles="https://{s}.tile.jawg.io/jawg-matrix/{z}/{x}/{y}{r}.png?access-token=rZdfyevzxIdbsN9w6Vj7F3XIXkLO4IuXeksSMnFb8uByhftsBIHdSlCcpHVr16QR", attr="<a>somethin should go here</a>") #"https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
