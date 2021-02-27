@@ -203,7 +203,7 @@ class Main:
 		#set up options
 		driverOptions = {
 			"macos": webdriver.ChromeOptions,
-			"linux": webdriver.FirefoxOptions,
+			"linux": webdriver.ChromeOptions,
 			"windows": webdriver.ChromeOptions
 		}
 		self.options = driverOptions[self.config['os']]()
