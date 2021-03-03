@@ -12,7 +12,7 @@ import Events
 from ConditionalImportance import ImportanceChecker
 from JSON4JSON import JSON4JSON
 import argparse
-
+import datetime
 
 
 class Main:
@@ -56,6 +56,14 @@ class Main:
 	def exit(self):
 		self.driver.quit()
 		sys.exit()
+	def GetIncidentTime(self, i):
+		hour = int(i['isoTime'].split(":")[0])
+		minute = int(i['isoTime'].split(":")[1])
+		year = int(i['isoDate'][:4])
+		month = int(i.split("-")[1])
+		day = int(i.split("-")[2])
+		return datetime.datetime(year=year, month=month, day=day, hour=hour, minute=minute)
+
 
 	def WaitForID(self, id, timeout="default", crash=True):
 		if timeout == "default":
@@ -80,7 +88,22 @@ class Main:
 				icd = ic.find_element_by_xpath("./div[contains(@class, 'pp_incident_item_description')]")
 				iType = icd.find_element_by_xpath("./h2[contains(@class, 'pp_incident_item_description_title')]").text
 				iLocation = icd.find_element_by_xpath("./h3[contains(@class, 'pp_incident_item_description_location')]").text
-				incidentReport = {"time" : timestamp, "type" : iType, "address" : iLocation}
+				
+				date = datetime.date.today()
+				minute = timestamp.split(", ")[1].split(":")[1]
+				hourOffset = 0
+				hour = int(timestamp.split(", ")[1].split(":")[0])
+				if "PM" in minute and hour != 12: hourOffset = 12 #if it says 1:00, make it 13:00. 11:00 PM = 23:00 (12+11) 
+				if "AM" in minute and hour == 12: hour = 0 #12AM = 0:00
+				minute = int(minute.split(" ")[0])
+				time = datetime.time(hour + hourOffset, minute, 0)
+				if "Yesterday" in timestamp: date = date - datetime.timedelta(days=1) #this makes it so that we go back a day if it was yesterday.
+				
+				date = date.isoformat()
+				time = time.isoformat("minutes")
+				
+				incidentReport = {"timedesc" : timestamp, "type" : iType, "address" : iLocation, "time": time + " | " + date, "isoTime": time, "isoDate": date}
+				print(incidentReport)
 				if self.incidentID(incidentReport) not in self.data['analyzed']:
 					incidentList.append(incidentReport)
 					self.Events.OnAnyIncidentFound(incidentReport)
