@@ -60,8 +60,8 @@ class Main:
 		hour = int(i['isoTime'].split(":")[0])
 		minute = int(i['isoTime'].split(":")[1])
 		year = int(i['isoDate'][:4])
-		month = int(i.split("-")[1])
-		day = int(i.split("-")[2])
+		month = int(i['isoDate'].split("-")[1])
+		day = int(i['isoDate'].split("-")[2])
 		return datetime.datetime(year=year, month=month, day=day, hour=hour, minute=minute)
 
 
