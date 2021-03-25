@@ -1,3 +1,5 @@
+### Note: I haven't touched this project in a while, I'll definitely come back to it when I'm less busy. I'll probably also rip out the whole selenium part, and do everything through requests.
+
 # PulsepointScraper
 Get notifications about certain medical emergencies at custom locations (highly configurable)
 
