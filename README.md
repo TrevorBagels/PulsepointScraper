@@ -1,6 +1,8 @@
-### Note: I haven't touched this project in a while, I'll definitely come back to it when I'm less busy. I'll probably also rip out the whole selenium part, and do everything through requests.
+### This is the old version of PulsepointScraper. Check out the new version, available [here](https://github.com/TrevorBagels/PulsepointScraperV2)
 
-# PulsepointScraper
+
+
+# PulsepointScraper (V1)
 Get notifications about certain medical emergencies at custom locations (highly configurable)
 
 **Works for MacOS, Linux, and Windows**
